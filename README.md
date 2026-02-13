@@ -19,9 +19,9 @@ Write any assumptions that we need to know about running your MapReduce implemen
 
 ### Work Split
 
-## PA1 - Intermediate Submission
-## Jake Kim - Wrote Reduce and part of Combine sections
-## Soohyun Lee - Wrote Map and part of Combine sections
+### PA1 - Intermediate Submission
+### Jake Kim - Wrote Reduce and part of Combine sections
+### Soohyun Lee - Wrote Map and part of Combine sections
 
 ### AI Use
 
