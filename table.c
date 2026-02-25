@@ -50,7 +50,7 @@ void table_print(const table_t *table) {
     for (int i = 0; i < TABLE_LEN; i++) { 
         bucket_t *bucket = table->buckets[i];
         while (bucket != NULL) {
-            printf('{%s} - {%d}\n', bucket->ip, bucket->requests);
+            printf("%s - %d\n", bucket->ip, bucket->requests);
             bucket = bucket->next;
         }
     }
@@ -126,7 +126,7 @@ int hash_ip(const char ip[IP_LEN]) {
         return -1;
     }
 
-    return sum % TABLE_LEN;
+    return result % TABLE_LEN;
 }
 
 int table_to_file(table_t *table, const char out_file[MAX_PATH]) {
@@ -175,5 +175,5 @@ table_t *table_from_file(const char in_file[MAX_PATH]) {
     }
 
     fclose(file);
-    return NULL;
+    return table;
 }
