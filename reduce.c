@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Merge curr_table into table
-    for (int i = 0; i < TABLE_LEN; i++) {
+    for (int i = start_ip; i < end_ip; i++) {
       bucket_t *curr = curr_table->buckets[i];
 
       while (curr != NULL) {
@@ -97,42 +97,15 @@ int main(int argc, char *argv[]) {
   // Close the directory
   closedir(dir);
 
-  // Create a final filtered_table
-  table_t *filtered_table = table_init();
-  if (filtered_table == NULL) {
-    table_free(table);
-    return 1;
-  }
-  // Add buckets within IP range [start_ip, end_ip) to filtered_table
-  for (int i = 0; i < TABLE_LEN; i++) {
-    bucket_t *curr = table->buckets[i];
-
-    while (curr != NULL) {
-      // Convert IP string to long for comparison
-      long ipAddress = atol(curr->ip);
-
-      // If ipAdress fit within the range, add it to the filtered_table
-      if (ipAddress >= start_ip && ipAddress < end_ip) {
-        bucket_t *buc = bucket_init(curr->ip);
-        buc->requests += curr->requests;
-        table_add(filtered_table, buc);
-      }
-
-      curr = curr->next;
-    }
-  }
-
-  // Write filtered table to output file
-  if (table_to_file(filtered_table, argv[2]) != 0) {
+  // Write the table to the output file
+  if (table_to_file(table, argv[2]) != 0) {
     perror("failed to write a file");
     table_free(table);
-    table_free(filtered_table);
     return 1;
   }
 
   table_free(table);
-  table_free(filtered_table);
-
+  
   return 0;
 }
 
