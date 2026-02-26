@@ -73,20 +73,25 @@ int main(int argc, char *argv[]) {
     }
 
     // Merge curr_table into table
-    for (int i = start_ip; i < end_ip; i++) {
+    for (int i = 0; i < TABLE_LEN; i++) {
       bucket_t *curr = curr_table->buckets[i];
 
       while (curr != NULL) {
-        bucket_t *givenIP_bucket = table_get(table, curr->ip);
+        long ipAddress = atol(curr->ip);
 
         // If IP exists, add requests
-        if (givenIP_bucket != NULL) {
-          givenIP_bucket->requests += curr->requests;
-          // If IP doesn't exist, make a bucket and add to table
-        } else {
-          bucket_t *new_bucket = bucket_init(curr->ip);
-          new_bucket->requests = curr->requests;
-          table_add(table, new_bucket);
+        if (ipAddress >= start_ip && ipAddress < end_ip) {
+          bucket_t *IP_bucket = table_get(table, curr->ip);
+
+          if (IP_bucket != NULL) { 
+            IP_bucket->requests += curr->requests;
+          } else {
+            bucket_t *new_bucket = bucket_init(curr->ip);
+            if (new_bucket != NULL) { 
+              new_bucket->requests = curr->requests;
+              table_add(table, new_bucket);
+            }
+          }
         }
         curr = curr->next;
       }
@@ -94,6 +99,7 @@ int main(int argc, char *argv[]) {
 
     table_free(curr_table);
   }
+  
   // Close the directory
   closedir(dir);
 
@@ -111,5 +117,9 @@ int main(int argc, char *argv[]) {
 
 int reduce_file(table_t *table, const char file_path[MAX_PATH],
                 const int start_ip, const int end_ip) {
+  (void)table;
+  (void)file_path;
+  (void)start_ip;
+  (void)end_ip;
   return 0;
 }

@@ -33,6 +33,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // Create the intermediate and out directories with read/write/execute permissions
+    mkdir("./intermediate", 0777);
+    mkdir("./out", 0777);
+
     DIR *dir = opendir(dir_path);
     if (dir == NULL) {
         perror("opendir");
@@ -142,7 +146,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    const long KEYSPACE = 1L << 16;
+    const long KEYSPACE = 256;
 
     for (int i = 0; i < n_reducers; i++) {
         long ip_start = (i * KEYSPACE) / n_reducers;
@@ -183,6 +187,7 @@ int main(int argc, char *argv[]) {
 
         reduce_pid[i] = pid;
         free(args);
+        free(start_buf);
     }
 
     int reduce_fail = 0;
