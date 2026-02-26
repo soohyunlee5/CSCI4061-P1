@@ -23,17 +23,17 @@ The result is written to an output file.
 
 ### Assumptions
 
-Write any assumptions that we need to know about running your MapReduce implementation, or grading here.
+No current assumptions
 
 ### Work Split
 
-### PA1 - Intermediate Submission
-
 ### Jake Kim 
-Wrote Reduce and part of Combine sections
+Wrote Reduce and part of Combine sections on README
+Wrote reduce.c and table.c
 
 ### Soohyun Lee
-Wrote Map and part of Combine sections
+Wrote Map and part of Combine sections on README
+Wrote map.c and main.c
 
 ### AI Use
 

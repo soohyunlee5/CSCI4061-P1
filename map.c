@@ -19,14 +19,14 @@ int main(int argc, char *argv[]) {
 
     table_t *table = table_init();
     if (table == NULL) {
-        perror("Error allocating table");
+        fprintf(stderr, "table or file path is invalid\n");
         return 1;
     }
 
     for (int i = 2; i < argc; i++) {
         if (map_log(table, argv[i]) != 0) {
             table_free(table);
-            perror("map_log failed");
+            fprintf(stderr, "map_log failed\n");
             return 1;
         }
     }
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
 int map_log(table_t *table, const char file_path[MAX_PATH]) {
     if (table == NULL || file_path == NULL) {
-        perror("Table or file path is invalid");
+        fprintf(stderr, "table or file path is invalid\n");
         return 1;
     }
 
@@ -57,13 +57,14 @@ int map_log(table_t *table, const char file_path[MAX_PATH]) {
 
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
 
+        // Prevent buffer overflow based on: %19[^,],%15[^,],%7[^,],%36[^,],%3s in sscanf
         char time[20];
         char ip[IP_LEN];
         char method[8];
         char endpoint[37];
         char status[4];
 
-        if (sscanf(buffer, "%19[^,], %15[^,], %7[^,], %36[^,], %3s", time, ip, method, endpoint, status) == 5) {
+        if (sscanf(buffer, "%19[^,],%15[^,],%7[^,],%36[^,],%3s", time, ip, method, endpoint, status) == 5) {
             bucket_t *bucket = table_get(table, ip);
             if (bucket == NULL) {
                 bucket_t *new_bucket = bucket_init(ip);
@@ -76,7 +77,7 @@ int map_log(table_t *table, const char file_path[MAX_PATH]) {
                 if (table_add(table, new_bucket) != 0) {
                     free(new_bucket);
                     fclose(file);
-                    perror("Failed to add bucket to table");
+                    fprintf(stderr, "table_add failed\n");
                     return 1;
                 }
             } else {

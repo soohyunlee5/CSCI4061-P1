@@ -19,12 +19,12 @@ int main(int argc, char *argv[]) {
     int n_reducers = atoi(argv[3]);
 
     if (n_mappers == 0 && strcmp(argv[2], "0") != 0) {
-        perror("Invalid number of mappers");
+        fprintf(stderr, "invalid number of mappers\n");
         return 1;
     }
 
     if (n_reducers == 0 && strcmp(argv[3], "0") != 0) {
-        perror("Invalid number of reducers");
+        fprintf(stderr, "invalid number of reducers\n");
         return 1;
     }
 
@@ -32,11 +32,6 @@ int main(int argc, char *argv[]) {
         printf("mapreduce: cannot have less than one mapper or reducer\n");
         return 1;
     }
-
-    mkdir("./intermediate", 0777);
-    chmod("./intermediate", 0777);
-    mkdir("./out", 0777);
-    chmod("./out", 0777);
 
     DIR *dir = opendir(dir_path);
     if (dir == NULL) {

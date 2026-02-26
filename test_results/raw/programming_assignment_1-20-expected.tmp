@@ -1,3 +1,0 @@
-$ ./reduce x x 0 256 2>&1 | grep -q "No such file or directory" || echo "perror not used"
-$ exit
-exit
